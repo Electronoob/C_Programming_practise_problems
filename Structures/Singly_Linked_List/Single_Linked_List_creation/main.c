@@ -1,75 +1,98 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include <inttypes.h>
 
-struct node
-    {
-    int register_number;
-    int mark;
-    struct node *next;
-    };
+#include<stdio.h>
+#include<stdint.h>
+#include<inttypes.h>
+#include<string.h>
+#include<stdlib.h>
+
+struct student{
+   char register_number[100];
+   char area_of_interest[100];
+   struct student *next;
+};
+
 
 int main()
 {
-    int id;
-    struct node *head=0, *new_node, *temp;
+    char register_number_input[10], area_of_interest_input[20];
+    struct student *head=0, *temp, *new_node;
+    int index=0;
 
-  //  get_input();
     while(1)
     {
-        printf("register number : ");
-        scanf("%d", &id);
-        if(id==-1)
+        printf("Enter register number : ");
+        fgets(register_number_input, 10, stdin);
+        while(1)
+        {
+            if(register_number_input[index]=='\n')
+            {
+                register_number_input[index]='\0';
+                index=0;
+
+                break;
+            }
+            index++;
+        }
+        if(strcmp(register_number_input, "-1")==0)
         {
             break;
         }
         else
         {
-             new_node = malloc(sizeof(struct node));
+            printf("Enter the Area of interest: ");
+            fgets(area_of_interest_input, 20, stdin);
 
-             if(new_node ==NULL)
-             {
-                 printf("Memory allocation failed \n");
-             }
+            new_node=(struct student *)malloc(sizeof(struct student));
+             strcpy(new_node->register_number, register_number_input);
+             strcpy(new_node->area_of_interest, area_of_interest_input);
 
-             new_node->register_number=id;
-             printf("Mark : ");
-             scanf("%d", &new_node->mark  );
+            if(new_node==NULL)
+            {
+                printf("Memory allocation failed\n");
+            }
 
-             if(head==NULL)
-             {
-                 head=new_node;
-               //  printf("head address %p", head);
+
+
+            if(head==NULL)
+            {
+                head=new_node;
+
+                temp=new_node;
+                temp->next=NULL;
+
+            }
+            else
+            {
+                temp->next=new_node;
                  temp=new_node;
-                 temp->next=NULL;
-             }
 
-             else
-             {
-                 temp->next=new_node;
-              //   printf("Temp->next %p\n", temp->next);
 
-                 temp=new_node;
-                 temp->next=NULL;
+                temp->next=NULL;
 
-             }
+            }
+
         }
-   }
+    }
 
-    printf("student details:\n");
+
+
     temp=head;
-    if(temp==0)
-    {
-        printf("No details are entered");
-    }
-    while(temp!=0)
-    {
-        printf("Register number %d\n", temp->register_number);
-        printf("Mark %d\n", temp->mark);
-        temp=temp->next;                // i dont't know how to delete memory
 
+
+    if(temp==NULL)
+    {
+        printf("No details were added");
     }
+
+        while(temp!=NULL)
+        {
+            printf("Register number : %s", temp->register_number);
+            printf("Area of interest : %s\n", temp->area_of_interest);
+            temp=temp->next;
+        }
+
+
+
 
     return 0;
 }
